@@ -1,0 +1,22 @@
+El problema
+
+Los filtros tradicionales de Power BI (listas desplegables, segmentadores de texto) funcionan bien, pero no son la forma más intuitiva de explorar datos clínicos organizados por zona anatómica. Cuando el usuario quiere responder "¿qué está pasando en el sistema respiratorio?", clicar sobre un pulmón es más natural que buscar "Sistema respiratorio" en una lista.
+
+La solución
+
+Se ha vectorizado una figura del cuerpo humano y se ha dividido en regiones y órganos clicables. Cada zona actúa como filtro sobre el resto del informe: al seleccionar un órgano, todas las visualizaciones (hospitalizaciones, mortalidad, distribución por edad y sexo) se recalculan para mostrar únicamente los datos asociados a esa zona.
+
+Datos 100% ficticios, generados para simular un escenario realista de hospitalización y mortalidad por enfermedad/órgano afectado.
+
+Cómo está construido
+Vectorización e interacción: la figura humana y sus regiones se representan como imágenes/formas independientes; la selección se gestiona mediante marcadores (bookmarks) y acciones de imagen, sincronizados con segmentadores ocultos que filtran el modelo.
+Modelo de datos: estructura en estrella con tablas puente para relaciones muchos-a-muchos, dado que un paciente puede tener varias enfermedades y una enfermedad puede afectar a varios órganos:
+Datos_Paciente_&_Hospital_&_Fecha_Ingreso
+Enfermedad_&_Organo_Afectado, Organos_afectados, Partes_cuerpo
+Tablas puente: ID_Enfermedad_&_ID_Paciente, ID_Partes_Cuerpo_&_ID_Paciente, ID_Paciente_ID_Organos
+Tasa_Mortalidad, Tabla_Mortalidad_edad_sexo, Tabla_Hospitalizacion_edad_sexo
+Medidas DAX: cálculos de tasas de hospitalización y mortalidad segmentadas dinámicamente según la región del cuerpo seleccionada.
+
+Archivos
+vectorizacion-cuerpo-humano.pbix — informe completo, descargable
+capturas/ — GIF/imágenes de la interacción
